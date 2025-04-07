@@ -12,36 +12,18 @@ export function deepEquals<T>(objA: T, objB: T): boolean {
       return false;
     }
 
-    const flatA = objA.flat(Infinity);
-    const flatB = objB.flat(Infinity);
-
-    return flatA.every((val, i) => val === flatB[i]);
+    return objA.every((value, i) => deepEquals(value, objB[i]));
   }
 
   if (isObject(objA) && isObject(objB)) {
-    if (Object.keys(objA).length !== Object.keys(objB).length) {
+    const objAKeys = Object.keys(objA);
+    const objBKeys = Object.keys(objB);
+
+    if (objAKeys.length !== objBKeys.length) {
       return false;
     }
 
-    const sortObjA = Object.keys(objA)
-      .sort()
-      .reduce(
-        (obj, key) => {
-          obj[key] = objA[key];
-          return obj;
-        },
-        {} as Record<string, unknown>,
-      );
-    const sortObjB = Object.keys(objB)
-      .sort()
-      .reduce(
-        (obj, key) => {
-          obj[key] = objB[key];
-          return obj;
-        },
-        {} as Record<string, unknown>,
-      );
-    return JSON.stringify(sortObjA) === JSON.stringify(sortObjB);
+    return objAKeys.every((key) => deepEquals(objA[key], objB[key]));
   }
 
   return false;
