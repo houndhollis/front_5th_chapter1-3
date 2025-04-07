@@ -5,12 +5,14 @@ import { useRef } from "./useRef";
 export function useMemo<T>(
   factory: () => T,
   _deps: DependencyList,
-  _equals = shallowEquals,
+  _equals = shallowEquals
 ): T {
-  const memorizedValue = useRef<DependencyList | null>(null);
-  if (!memorizedValue.current || !_equals(memorizedValue.current, _deps)) {
-    memorizedValue.current = _deps;
-    return factory();
+  const memorizedValue = useRef<{ fn: T; deps: DependencyList } | null>(null);
+  if (!memorizedValue.current || !_equals(memorizedValue.current.deps, _deps)) {
+    memorizedValue.current = {
+      fn: factory(),
+      deps: _deps,
+    };
   }
-  return memorizedValue.current as T;
+  return memorizedValue.current.fn;
 }
