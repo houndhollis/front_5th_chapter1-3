@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Item } from "../type";
 import { renderLog } from "../utils";
 import { useToggleContext } from "../provider/ToggleProvider";
+import { useMemo } from "../@lib";
 
 export const ItemList: React.FC<{
   items: Item[];
@@ -11,15 +12,21 @@ export const ItemList: React.FC<{
   const [filter, setFilter] = useState("");
   const { theme } = useToggleContext();
 
-  const filteredItems = items.filter(
-    (item) =>
-      item.name.toLowerCase().includes(filter.toLowerCase()) ||
-      item.category.toLowerCase().includes(filter.toLowerCase())
-  );
+  const filteredItems = useMemo(() => {
+    return items.filter(
+      (item) =>
+        item.name.toLowerCase().includes(filter.toLowerCase()) ||
+        item.category.toLowerCase().includes(filter.toLowerCase())
+    );
+  }, [filter, items]);
 
-  const totalPrice = filteredItems.reduce((sum, item) => sum + item.price, 0);
+  const totalPrice = useMemo(() => {
+    return filteredItems.reduce((sum, item) => sum + item.price, 0);
+  }, [filteredItems]);
 
-  const averagePrice = Math.round(totalPrice / filteredItems.length) || 0;
+  const averagePrice = useMemo(() => {
+    return Math.round(totalPrice / filteredItems.length) || 0;
+  }, [filteredItems.length, totalPrice]);
 
   return (
     <div className="mt-8">
