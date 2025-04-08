@@ -7,7 +7,7 @@ import { NotificationSystem } from "../components/NotificationSystem";
 import { useToggleContext } from "../provider/ToggleProvider";
 
 export const Home = () => {
-  const [items, setItems] = useState(generateItems(1000));
+  const [items, setItems] = useState(() => generateItems(1000));
   const { theme } = useToggleContext();
 
   const addItems = () => {
