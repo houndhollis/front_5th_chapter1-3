@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { useCallback } from "../@lib";
+import { useCallback, useMemo } from "../@lib";
 
 interface ToggleContextType {
   theme: string;
@@ -25,8 +25,16 @@ export const ToggleProvider = ({ children }: { children: React.ReactNode }) => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   }, []);
 
+  const contextValue = useMemo(
+    () => ({
+      toggleTheme,
+      theme,
+    }),
+    [theme, toggleTheme]
+  );
+
   return (
-    <ToggleContext.Provider value={{ toggleTheme, theme }}>
+    <ToggleContext.Provider value={contextValue}>
       {children}
     </ToggleContext.Provider>
   );

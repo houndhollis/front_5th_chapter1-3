@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { Notification } from "../type";
-import { useCallback } from "../@lib";
+import { useCallback, useMemo } from "../@lib";
 
 interface NotificationContextType {
   notifications: Notification[];
@@ -15,7 +15,6 @@ const NotificationContext = createContext<NotificationContextType | undefined>(
 // eslint-disable-next-line react-refresh/only-export-components
 export const useNotificationContext = () => {
   const context = useContext(NotificationContext);
-
   if (!context) {
     throw new Error("노티파이 사용 불가!");
   }
@@ -46,10 +45,17 @@ export const NotificationProvider = ({
     setNotifications((prev) => prev.filter((n) => n.id !== id));
   }, []);
 
+  const contextValue = useMemo(
+    () => ({
+      notifications,
+      addNotification,
+      removeNotification,
+    }),
+    [notifications, addNotification, removeNotification]
+  );
+
   return (
-    <NotificationContext.Provider
-      value={{ notifications, addNotification, removeNotification }}
-    >
+    <NotificationContext.Provider value={contextValue}>
       {children}
     </NotificationContext.Provider>
   );

@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { User } from "../type";
-import { useCallback } from "../@lib";
+import { useCallback, useMemo } from "../@lib";
 import { useNotificationContext } from "./NotificationProvider";
 
 interface UserContextType {
@@ -39,9 +39,16 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     addNotification("로그아웃되었습니다", "info");
   }, [addNotification]);
 
+  const contextValue = useMemo(
+    () => ({
+      user,
+      login,
+      logout,
+    }),
+    [login, logout, user]
+  );
+
   return (
-    <UserContext.Provider value={{ user, login, logout }}>
-      {children}
-    </UserContext.Provider>
+    <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
   );
 };
