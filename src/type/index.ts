@@ -16,3 +16,10 @@ export interface Notification {
   message: string;
   type: "info" | "success" | "warning" | "error";
 }
+
+export interface ComplexType {
+  name: string;
+  email: string;
+  age: number;
+  preferences: string[];
+}
