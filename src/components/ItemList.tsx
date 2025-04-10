@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Item } from "../type";
 import { renderLog } from "../utils";
-import { useToggleContext } from "../provider/ToggleProvider";
+import { useThemeContext } from "../context/useThemeContext";
 import { useMemo } from "../@lib";
 
 export const ItemList: React.FC<{
@@ -10,7 +10,7 @@ export const ItemList: React.FC<{
 }> = ({ items, onAddItemsClick }) => {
   renderLog("ItemList rendered");
   const [filter, setFilter] = useState("");
-  const { theme } = useToggleContext();
+  const { theme } = useThemeContext();
 
   const filteredItems = useMemo(() => {
     return items.filter(

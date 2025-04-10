@@ -1,26 +1,8 @@
-import { createContext, useContext, useState } from "react";
+import { useState } from "react";
 import { User } from "../type";
 import { useCallback, useMemo } from "../@lib";
-import { useNotificationContext } from "./NotificationProvider";
-
-interface UserContextType {
-  user: User | null;
-  login: (email: string, password: string) => void;
-  logout: () => void;
-}
-
-const UserContext = createContext<UserContextType | undefined>(undefined);
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const useUserContext = () => {
-  const context = useContext(UserContext);
-
-  if (!context) {
-    throw new Error("유저 컨텍스트 사용 불가!");
-  }
-
-  return context;
-};
+import { useNotificationContext } from "../context/useNotificationContext";
+import { UserContext } from "../context/useUserContext";
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);

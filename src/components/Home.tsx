@@ -4,18 +4,19 @@ import { Header } from "../components/Header";
 import { ItemList } from "../components/ItemList";
 import { ComplexForm } from "../components/ComplexForm";
 import { NotificationSystem } from "../components/NotificationSystem";
-import { useToggleContext } from "../provider/ToggleProvider";
+import { useCallback } from "../@lib";
+import { useThemeContext } from "../context/useThemeContext";
 
 export const Home = () => {
   const [items, setItems] = useState(() => generateItems(1000));
-  const { theme } = useToggleContext();
+  const { theme } = useThemeContext();
 
-  const addItems = () => {
+  const addItems = useCallback(() => {
     setItems((prevItems) => [
       ...prevItems,
       ...generateItems(1000, prevItems.length),
     ]);
-  };
+  }, []);
 
   return (
     <div

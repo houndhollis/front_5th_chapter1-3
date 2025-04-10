@@ -1,10 +1,10 @@
-import { useToggleContext } from "../provider/ToggleProvider";
-import { useUserContext } from "../provider/UserProvider";
+import { useThemeContext } from "../context/useThemeContext";
+import { useUserContext } from "../context/useUserContext";
 import { renderLog } from "../utils";
 
 export const Header: React.FC = () => {
   renderLog("Header rendered");
-  const { theme, toggleTheme } = useToggleContext();
+  const { theme, toggleTheme } = useThemeContext();
   const { user, login, logout } = useUserContext();
 
   const handleLogin = () => {
