@@ -1,32 +1,15 @@
-import { useState } from "react";
-import { Item } from "../type";
-import { renderLog } from "../utils";
-import { useThemeContext } from "../context/useThemeContext";
-import { useMemo } from "../@lib";
+import { Item } from "../../type";
+import { renderLog } from "../../utils";
+import { useItemList } from "./useItemList";
 
 export const ItemList: React.FC<{
   items: Item[];
   onAddItemsClick: () => void;
 }> = ({ items, onAddItemsClick }) => {
   renderLog("ItemList rendered");
-  const [filter, setFilter] = useState("");
-  const { theme } = useThemeContext();
 
-  const filteredItems = useMemo(() => {
-    return items.filter(
-      (item) =>
-        item.name.toLowerCase().includes(filter.toLowerCase()) ||
-        item.category.toLowerCase().includes(filter.toLowerCase())
-    );
-  }, [filter, items]);
-
-  const totalPrice = useMemo(() => {
-    return filteredItems.reduce((sum, item) => sum + item.price, 0);
-  }, [filteredItems]);
-
-  const averagePrice = useMemo(() => {
-    return Math.round(totalPrice / filteredItems.length) || 0;
-  }, [filteredItems.length, totalPrice]);
+  const { filter, setFilter, filteredItems, totalPrice, averagePrice, theme } =
+    useItemList({ items });
 
   return (
     <div className="mt-8">

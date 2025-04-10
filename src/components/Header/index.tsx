@@ -1,16 +1,10 @@
-import { useThemeContext } from "../context/useThemeContext";
-import { useUserContext } from "../context/useUserContext";
-import { renderLog } from "../utils";
+import { renderLog } from "../../utils";
+import { useHeader } from "./useHeader";
 
 export const Header: React.FC = () => {
   renderLog("Header rendered");
-  const { theme, toggleTheme } = useThemeContext();
-  const { user, login, logout } = useUserContext();
 
-  const handleLogin = () => {
-    // 실제 애플리케이션에서는 사용자 입력을 받아야 합니다.
-    login("user@example.com", "password");
-  };
+  const { logout, user, theme, toggleTheme, handleLogin } = useHeader();
 
   return (
     <header className="bg-gray-800 text-white p-4">
